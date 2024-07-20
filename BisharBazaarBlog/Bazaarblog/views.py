@@ -9,13 +9,28 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 
 def home(request):
-    post_list = BlogPost.objects.all().order_by('-created_at')
-    paginator = Paginator(post_list, 5)  # Show 5 posts per page
+    posts = BlogPost.objects.all().order_by('-created_at')
+    categories = Category.objects.all()
+    return render(request, 'Bazaarblog/home.html', {'posts': posts, 'categories': categories})
 
-    page_number = request.GET.get('page')
-    posts = paginator.get_page(page_number)
-    
-    return render(request, 'Bazaarblog/home.html', {'posts': posts})
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        form = BlogPostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            messages.success(request, 'Your blog post was created successfully!')
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = BlogPostForm()
+    return render(request, 'Bazaarblog/create_post.html', {'form': form})
+
+def category_posts(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
+    posts = BlogPost.objects.filter(category=category).order_by('-created_at')
+    return render(request, 'Bazaarblog/category_posts.html', {'category': category, 'posts': posts})
 
 
 def register(request):

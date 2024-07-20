@@ -14,9 +14,10 @@ class UserRegistrationForm(UserCreationForm):
 class BlogPostForm(forms.ModelForm):
     class Meta:
         model = BlogPost
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'category']
         widgets = {
             'content': forms.Textarea(attrs={'rows': 5}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
         }
 
 class CommentForm(forms.ModelForm):

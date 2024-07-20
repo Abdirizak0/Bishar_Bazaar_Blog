@@ -9,4 +9,5 @@ urlpatterns = [
     path('post/<int:pk>/delete/', views.delete_post, name='delete_post'),
     path('register/', views.register, name='register'),  # Add this line
     path('search/', views.search_posts, name='search_posts'),
+    path('category/<slug:category_slug>/', views.category_posts, name='category_posts'),
 ]

@@ -2,6 +2,45 @@
 
 {% block content %}
     <h1>Welcome to Bishar Bazaar Blog</h1>
+
+    {% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome to Bishar Bazaar Blog</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            {% for post in posts %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            By {{ post.author.username }} on {{ post.created_at|date:"F d, Y" }}
+                            {% if post.category %}
+                                in <a href="{% url 'category_posts' post.category.slug %}">{{ post.category.name }}</a>
+                            {% endif %}
+                        </h6>
+                        <p class="card-text">{{ post.content|truncatewords:50 }}</p>
+                        <a href="{% url 'post_detail' post.pk %}" class="card-link">Read more</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No posts yet.</p>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h3>Categories</h3>
+            <ul class="list-group">
+                {% for category in categories %}
+                    <li class="list-group-item">
+                        <a href="{% url 'category_posts' category.slug %}">{{ category.name }}</a>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No categories yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
     
     <form class="mb-4" action="{% url 'search_posts' %}" method="get">
         <div class="input-group">
