@@ -104,3 +104,19 @@ def post_detail(request, pk):
         'new_comment': new_comment,
         'comment_form': comment_form
     })
+
+
+def search_posts(request):
+    query = request.GET.get('q')
+    if query:
+        posts = BlogPost.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+        ).distinct()
+    else:
+        posts = BlogPost.objects.all()
+    
+    context = {
+        'posts': posts,
+        'query': query
+    }
+    return render(request, 'Bazaarblog/search_results.html', context)

@@ -2,6 +2,16 @@
 
 {% block content %}
     <h1>Welcome to Bishar Bazaar Blog</h1>
+    
+    <form class="mb-4" action="{% url 'search_posts' %}" method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search posts" name="q">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+
     {% for post in posts %}
         <!-- ... post content ... -->
     {% empty %}
