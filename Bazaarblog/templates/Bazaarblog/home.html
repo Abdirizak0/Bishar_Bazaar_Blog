@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Welcome to Bishar Bazaar Blog</h1>
+{% for post in posts %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">By {{ post.author.username }} on {{ post.created_at|date:"F d, Y" }}</h6>
+            <p class="card-text">{{ post.content|truncatewords:50 }}</p>
+            <a href="{% url 'post_detail' post.pk %}" class="card-link">Read more</a>
+        </div>
+    </div>
+{% empty %}
+    <p>No posts yet.</p>
+{% endfor %}
+{% endblock %}
